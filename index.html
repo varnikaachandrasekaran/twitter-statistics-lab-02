@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter User Statistics</title>
+    <style>
+        body {
+font-family: Arial, sans-serif;
+background-color: #f4f7fb;
+margin: 0;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+box-sizing: border-box;
+}
+        h1 {
+    color: #243b53;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+input {
+padding: 12px;
+font-size: 16px;
+border: 1px solid #cbd5e1;
+border-radius: 6px;
+}
+
+button {
+padding: 12px 20px;
+font-size: 16px;
+background-color: #315eaa;
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+}
+
+button {
+background-color: #244782;
+}
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>Twitter User Statistics</h1>
+    <p>Enter a User ID to view their statistics.</p>
+    <input type="text" id="userId">
+    <button onclick="searchUser()">Search</button>
+    <p id="result" style="white-space: pre-line;"></p>
+    </div>
+    <script>
+        function searchUser() {
+    let userid = document.getElementById("userId").value.trim();
+    let result = document.getElementById("result");
+
+    if (userid === "") {
+        result.textContent = "Please enter a User ID.";
+        return;
+    }
+
+    result.textContent = "Searching...";
+
+    fetch("http://127.0.0.1:5000/api/user/" + encodeURIComponent(userid) + "/details")
+        .then(response => response.text())
+        .then(data => {
+            result.textContent = data;
+        })
+        .catch(error => {
+            console.error(error);
+            result.textContent = "Unable to retrieve statistics. Please try again.";
+        });
+}
+    </script>
+</body>
+</html>
+
